@@ -1,6 +1,13 @@
 {
+    "CppHelper.SourcePattern": [
+        "{FILE}.cpp",
+        "{FILE}.c",
+        "{FILE}.inl",
+        "/src/{FILE}.cpp"
+    ],
     "cmake.configureOnOpen": true,
     "files.associations": {
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "xlocale": "cpp"
     }
 }

@@ -3,7 +3,7 @@
 class TDataValue{
 public:
     virtual TDataValue* GetCopy() = 0;
-    ~TDataValue();
+    ~TDataValue(){};
 
 };
 

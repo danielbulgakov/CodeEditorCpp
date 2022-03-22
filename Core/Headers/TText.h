@@ -1,12 +1,13 @@
 #pragma once
 
-#include "TTextLink.h"
+
 #include "TDataCom.h"
 #include "TStack.h"
 #include <fstream>
 
-typedef TText* PTText;
 
+class TTextLink;
+typedef TTextLink* PTTextLink;
 class TText : public TDataCom {
 protected:
     PTTextLink pFirst; // указатель корня дерева
@@ -47,3 +48,5 @@ public:
     //печать
     void Print (void); // печать текста
 };
+
+typedef TText* PTText;

@@ -1,8 +1,10 @@
-#pragma once
-
+#pragma once 
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "TDataValue.h"
-#include "TText.h"
+
+
+class TText;
 
 enum TextErrors{
     TextOk = 0,
@@ -30,7 +32,7 @@ class TTextMem {
     PTTextLink pFree; // указатель на первое свободное звено
     friend class TTextLink;
 };
-
+ 
 typedef TTextMem *PTTextMem;
 
 class TTextLink : public TDataValue {
@@ -58,3 +60,4 @@ protected:
     virtual void Print (std::ostream &os) {os << Str;}
     friend class TText;
 };
+

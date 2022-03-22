@@ -7,13 +7,17 @@ set(SOURCE_FILES main.cpp)
 
 add_executable(CodeEditorCpp main.cpp)
 
-add_library( CodeEditorCore
+SET(TARGET_H
 
+    Headers/TStack.h
     Headers/TDataCom.h
     Headers/TDataValue.h
-    Headers/TTextLink.h
     Headers/TText.h
-    Headers/TStack.h
+    Headers/TTextLink.h 
+
+)
+
+SET(TARGET_SRC
 
     Source/TDataCom.cpp
     Source/TDataValue.cpp
@@ -22,7 +26,7 @@ add_library( CodeEditorCore
 
 )
 
-target_link_libraries(CodeEditorCpp PRIVATE CodeEditorCore)
+
 
 # target_include_directories(CodeEditorCore PUBLIC include)
 
