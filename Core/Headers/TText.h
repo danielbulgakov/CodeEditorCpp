@@ -1,14 +1,18 @@
 #pragma once
-
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "TDataCom.h"
 #include "TStack.h"
 #include <fstream>
-
+#include <string>
 
 class TTextLink;
 typedef TTextLink* PTTextLink;
+
+
 class TText : public TDataCom {
+
+
 protected:
     PTTextLink pFirst; // указатель корня дерева
     PTTextLink pCurrent; // указатель текущей строки
@@ -19,8 +23,8 @@ protected:
     PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
 public:
     TText (PTTextLink pl = NULL);
-    ~TText () {pFirst =NULL;}
-    PTText getCopy();
+    ~TText () {pFirst =NULL;};
+    // PTText getCopy();
     // навигация
     int GoFirstLink (void); // переход к первой строке
     int GoDownLink (void); // переход к следующей строке по Down

@@ -1,6 +1,7 @@
 #pragma once 
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <string>
 #include "TDataValue.h"
 
 
@@ -39,7 +40,7 @@ class TTextLink : public TDataValue {
 protected:
     TStr Str; // поле для хранения строки текста
     PTTextLink pNext, pDown; // указатели по тек. уровень и на подуровень
-    static TTextMem MemHeader; // система управления памятью
+    inline static TTextMem MemHeader; // система управления памятью
 public:
     static void InitMemSystem (int size=MemSize); // инициализация памяти
     static void PrintFreeLink (void); // печать свободных звеньев
