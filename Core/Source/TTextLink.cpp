@@ -28,17 +28,9 @@ void * TTextLink::operator new(size_t size){
 }
 
 void TTextLink::operator delete(void * pM){
-
-    PTTextLink pLink = (PTTextLink) pM;
-
-    PTTextLink pNext = nullptr;
-    // PTTextLink Next = nullptr;
-    // PTTextLink Cur = ((PTTextLink)pM)->pNext;
-    // while ( Cur != nullptr){
-    //     Next = Cur->GetNext();
-    //     delete Cur;
-    //     Cur = Next;
-    // }   
+    PTTextLink pLink = (PTTextLink)pM;
+    pLink->pNext = MemHeader.pFree;
+    MemHeader.pFree = pLink;
 }
 
 /*
@@ -58,6 +50,22 @@ void TTextLink::operator delete(void * pM){
 */
 
 
-void TTextLink::MemCleaner(const TText &txt){
+void TTextLink::MemCleaner(TText &txt){
+    // Обход и маркировка всех звеньев текста
+    for (txt.Reset(); !txt.IsTextEnded();  txt.GoNext()){
+        if (txt.GetLine().find("&&&") != 0)
+            txt.SetLine("&&&" + txt.GetLine());
+    }
+    PTTextLink pLink = MemHeader.pFree;
+    // Обход и маркировка всех свободных звеньев
+    for (;pLink != nullptr; pLink = pLink->pNext)
+        strcpy(pLink->Str, "&&&");
 
+    pLink = MemHeader.pFirst;
+    // Поиск не промаркированных звеньев и их удаление
+    for (;pLink <= MemHeader.pLast; pLink++){
+        if (strstr(pLink->Str, "&&&") != NULL)
+            strcpy(pLink->Str, pLink->Str + 3);
+        else delete pLink;
+    }
 }
