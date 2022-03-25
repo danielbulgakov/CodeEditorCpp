@@ -28,11 +28,36 @@ void * TTextLink::operator new(size_t size){
 }
 
 void TTextLink::operator delete(void * pM){
-    PTTextLink Next = nullptr;
-    PTTextLink Cur = ((PTTextLink)pM)->pNext;
-    while ( Cur != nullptr){
-        Next = Cur->GetNext();
-        delete Cur;
-        Cur = Next;
-    }
+
+    PTTextLink pLink = (PTTextLink) pM;
+
+    PTTextLink pNext = nullptr;
+    // PTTextLink Next = nullptr;
+    // PTTextLink Cur = ((PTTextLink)pM)->pNext;
+    // while ( Cur != nullptr){
+    //     Next = Cur->GetNext();
+    //     delete Cur;
+    //     Cur = Next;
+    // }   
+}
+
+/*
+
+    --------
+    --------
+    -------- delete 
+            --------
+                    --------
+                    --------
+                    *
+            --------
+            -------- 
+            * 
+    *
+
+*/
+
+
+void TTextLink::MemCleaner(const TText &txt){
+
 }

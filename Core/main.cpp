@@ -5,6 +5,6 @@
 
 
 int main(){
-      
+    std::cout << "Compile good in vs code";
     return 0;
 }

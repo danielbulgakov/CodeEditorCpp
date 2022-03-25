@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 14)            # Enable c++14 standard
 # Add main.cpp file of project root directory as source file
 set(SOURCE_FILES main.cpp)
 
+FILE (GLOB SOURCE Source/*.cpp)
+
 add_executable(CodeEditorCpp main.cpp)
 
 SET(TARGET_H

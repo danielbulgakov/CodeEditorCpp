@@ -1,13 +1,9 @@
 {
-    "CppHelper.SourcePattern": [
-        "{FILE}.cpp",
-        "{FILE}.c",
-        "{FILE}.inl",
-        "/src/{FILE}.cpp"
-    ],
     "cmake.configureOnOpen": true,
     "files.associations": {
         "iosfwd": "cpp",
-        "xlocale": "cpp"
-    }
+        "xlocale": "cpp",
+        "iostream": "cpp"
+    },
+    "cmake.cpptools.compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\Hostx64\\x64\\cl.exe"
 }
