@@ -6,7 +6,7 @@ void TTextLink::InitMemSystem(int size){
     MemHeader.pFree = MemHeader.pFirst;
     MemHeader.pLast = MemHeader.pFirst + (size - 1);
     PTTextLink pLink = MemHeader.pFirst;
-    for (int i = 0; i < size - 1; pLink++){
+    for (int i = 0; i < size - 1; i++, pLink++){
         pLink->pNext = pLink + 1;
     }
     pLink->pNext = 0;
