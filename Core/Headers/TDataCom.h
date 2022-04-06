@@ -10,7 +10,7 @@ protected:
     int RetCode;
     void SetRetCode(int _RetCode) {this->RetCode = _RetCode;};
     TDataCom():RetCode(DataOk){};
-    virtual ~TDataCom();
+    virtual ~TDataCom() = default;
     int GetRetCode(){
         int tmp = RetCode;
         RetCode = DataOk;

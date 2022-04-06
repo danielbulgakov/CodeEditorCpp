@@ -13,7 +13,7 @@ void TTextLink::InitMemSystem(int size){
 }
 
 void TTextLink::PrintFreeLink(){
-    PTTextLink pLink = MemHeader.pFirst;
+    PTTextLink pLink = MemHeader.pFree;
     for (; pLink != nullptr; pLink = pLink->pNext){
         std::cout << pLink->Str << std::endl;
     }
