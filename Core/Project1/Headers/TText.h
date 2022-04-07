@@ -5,6 +5,7 @@
 #include "TStack.h"
 #include <fstream>
 #include <string>
+#include <stack>
 
 class TTextLink;
 typedef TTextLink* PTTextLink;
@@ -16,8 +17,8 @@ class TText : public TDataCom {
 protected:
     PTTextLink pFirst; // указатель корня дерева
     PTTextLink pCurrent; // указатель текущей строки
-    TStack< PTTextLink > Path; // стек траектории движения по тексту
-    TStack< PTTextLink > St; // стек для итератора
+    std::stack< PTTextLink > Path; // стек траектории движения по тексту
+    std::stack< PTTextLink > St; // стек для итератора
     PTTextLink GetFirstAtom (PTTextLink pl); // поиск первого атома
     void PrintText (PTTextLink ptl); // печать текста со звена ptl
     PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
@@ -43,9 +44,9 @@ public:
     void DelNextLine (void); // удаление строки в том же уровне
     void DelNextSection (void); // удаление раздела в том же уровне
     // итератор
-    int Reset (void); // установить на первую звапись
-    int IsTextEnded (void) const; // текст завершен?
-    int GoNext (void); // переход к следующей записи
+    bool Reset (void); // установить на первую звапись
+    bool IsTextEnded (void) const; // текст завершен?
+    bool GoNext (void); // переход к следующей записи
     //работа с файлами
     void Read (char * pFileName); // ввод текста из файла
     void Write (char * pFileName); // вывод текста в файл
