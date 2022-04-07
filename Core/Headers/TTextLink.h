@@ -15,11 +15,11 @@ enum TextErrors{
 
     TextNoMem = -101,
     TextError = -102,
-    TextLineLength = 100
 };
 
 enum StaticParameters{
-    MemSize = 20
+    MemSize = 20,
+    TextLineLength = 100
 };
 
 class TTextLink;

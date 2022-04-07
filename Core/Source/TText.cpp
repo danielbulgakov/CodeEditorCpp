@@ -42,7 +42,7 @@ bool TText::Reset (void){
     St = std::stack< PTTextLink >();
     pCurrent = pFirst;
     if (pCurrent != nullptr) {
-        St.push(pCurrent);
+        //St.push(pCurrent);
         if (pCurrent->pNext != nullptr) {
             St.push(pCurrent->pNext);
         }
@@ -61,14 +61,14 @@ bool TText::GoNext (void){
     if (!IsTextEnded()) {
         pCurrent = St.top();
         St.pop();
-        if (pCurrent != pFirst) {
+        //if (pCurrent != pFirst) {
             if (pCurrent->pNext != nullptr) {
                 St.push(pCurrent->pNext);
             }
             if (pCurrent->pDown != nullptr) {
                 St.push(pCurrent->pDown);
             }
-        }
+        //}
     }
     return IsTextEnded();
 };
