@@ -38,6 +38,7 @@ int TText::GoNextLink(void)
 
 std::string TText::GetLine(void){return std::string();};
 void TText::SetLine(std::string s){return;};
+
 bool TText::Reset (void){
     St = std::stack< PTTextLink >();
     pCurrent = pFirst;
