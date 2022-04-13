@@ -57,6 +57,7 @@ public:
     PTTextLink GetDown() {return pDown;}
     PTDataValue GetCopy() {return new TTextLink(Str,pNext,pDown);}
 
+    void Print() {std::cout << Str;}
 protected:
     virtual void Print (std::ostream &os) {os << Str;}
     friend class TText;

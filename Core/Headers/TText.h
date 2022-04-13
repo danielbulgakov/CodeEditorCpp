@@ -6,9 +6,7 @@
 #include <fstream>
 #include <string>
 #include <stack>
-
-class TTextLink;
-typedef TTextLink* PTTextLink;
+#include "TTextLink.h"
 
 
 class TText : public TDataCom {
@@ -21,10 +19,10 @@ protected:
     std::stack< PTTextLink > St; // стек для итератора
     PTTextLink GetFirstAtom (PTTextLink pl); // поиск первого атома
     void PrintText (PTTextLink ptl); // печать текста со звена ptl
-    PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
 public:
-    TText (PTTextLink pl = NULL);
-    ~TText () {pFirst =NULL;};
+    PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
+    TText (PTTextLink pl = nullptr);
+    ~TText () {pFirst =nullptr;};
     // PTText getCopy();
     // навигация
     int GoFirstLink (void); // переход к первой строке
@@ -52,6 +50,9 @@ public:
     void Write (char * pFileName); // вывод текста в файл
     //печать
     void Print (void); // печать текста
+    void PrintCurrent(){
+        pCurrent->Print();
+    }
 };
 
 typedef TText* PTText;

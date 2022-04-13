@@ -1,6 +1,37 @@
 #include "../Headers/TText.h"
 #include "../Headers/TTextLink.h"
 
+PTTextLink TText::ReadText (std::ifstream &TxtFile) 
+{
+    PTTextLink pHead, ptl;
+    pHead = ptl = new TTextLink();
+    char StrBuf[TextLineLength];
+    int StrLen = TextLineLength;
+
+    while(TxtFile.eof() == 0){
+        TxtFile.getline(StrBuf,StrLen, '\n');
+        if (StrBuf[0] == '}'){
+            break;
+        }
+        else if (StrBuf[0] == '{'){
+            ptl->pDown = ReadText(TxtFile);
+        }
+        else {
+            ptl->pNext = new TTextLink(StrBuf, nullptr, nullptr);
+            ptl = ptl->pNext;
+        }
+    }
+
+    ptl = pHead;
+
+    if (pHead->pDown == nullptr){
+        pHead = pHead->pNext;
+        delete ptl;
+    }
+
+    return pHead;
+}
+
 TText::TText(PTTextLink pl)
 {
     if (pl == nullptr){
