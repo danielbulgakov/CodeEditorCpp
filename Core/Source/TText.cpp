@@ -68,7 +68,117 @@ int TText::GoNextLink(void)
 }
 
 std::string TText::GetLine(void){return std::string();};
-void TText::SetLine(std::string s){return;};
+void TText::SetLine(std::string s){return;}
+
+void TText::InsDownLine(std::string s)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        char Buff[TextLineLength];
+        s.copy(Buff, s.length());
+        Buff[TextLineLength - 1] = '\0';
+
+        PTTextLink PCurDown = pCurrent->pDown;
+        PTTextLink pNewDown = new TTextLink(Buff, PCurDown);
+        
+        pCurrent->pDown = pNewDown;
+
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::InsDownSection(std::string s)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        char Buff[TextLineLength];
+        s.copy(Buff, s.length());
+        Buff[TextLineLength - 1] = '\0';
+
+        PTTextLink PCurDown = pCurrent->pDown;
+        PTTextLink pNewDown = new TTextLink(Buff, nullptr, PCurDown);
+
+        pCurrent->pDown = pNewDown;
+
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::InsNextLine(std::string s)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        char Buff[TextLineLength];
+        s.copy(Buff, s.length());
+        Buff[TextLineLength - 1] = '\0';
+
+        PTTextLink PCurNext = pCurrent->pNext;
+        PTTextLink pNewNext = new TTextLink(Buff, PCurNext);
+
+        pCurrent->pNext = pNewNext;
+
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::InsNextSection(std::string s)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        char Buff[TextLineLength];
+        s.copy(Buff, s.length());
+        Buff[TextLineLength - 1] = '\0';
+
+        PTTextLink PCurNext = pCurrent->pNext;
+        PTTextLink pNewNext = new TTextLink(Buff, nullptr, PCurNext);
+
+        pCurrent->pNext = pNewNext;
+
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::DelDownLine(void)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else if (pCurrent->pDown == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        PTTextLink pCurDown = pCurrent->pDown;
+        PTTextLink pCurDownNext = pCurDown->pNext;
+        
+        if (pCurDownNext->pNext == nullptr) { // если яляется атомом
+            pCurrent->pDown = pCurDownNext;       
+        }
+        
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::DelDownSection(void)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+
+        delete pCurrent->pDown;
+
+        SetRetCode(TextOk);
+    }
+}
+
 
 bool TText::Reset (void){
     St = std::stack< PTTextLink >();
