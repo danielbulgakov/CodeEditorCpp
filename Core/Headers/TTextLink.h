@@ -1,7 +1,7 @@
 #pragma once 
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <string>
+#include <cstring>
 #include "TDataValue.h"
 
 
@@ -58,6 +58,7 @@ public:
     PTDataValue GetCopy() {return new TTextLink(Str,pNext,pDown);}
 
     void Print() {std::cout << Str;}
+    std::string GetString(){return this->Str;}
 protected:
     virtual void Print (std::ostream &os) {os << Str;}
     friend class TText;

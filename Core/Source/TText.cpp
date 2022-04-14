@@ -67,10 +67,31 @@ int TText::GoNextLink(void)
     return RetCode;
 }
 
-std::string TText::GetLine(void){return std::string();};
-void TText::SetLine(std::string s){return;}
+std::string TText::GetLine(void)
+{
+    return pCurrent->GetString();
+}
 
-void TText::InsDownLine(std::string s)
+void TText::SetLine(std::string s)
+{
+    if (pCurrent == nullptr){
+        SetRetCode(TextError);
+    }
+    else{
+
+        char Buff[TextLineLength];
+        s.copy(Buff, s.length());
+        Buff[TextLineLength - 1] = '\0';
+
+        PTTextLink pLink = new TTextLink(Buff, pCurrent->pNext, pCurrent->pDown);   
+
+        SetRetCode(TextOk);
+    }
+
+    return;
+}
+
+void TText::InsDownLine(std::string s) // переделать
 {
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
@@ -89,7 +110,7 @@ void TText::InsDownLine(std::string s)
     }
 }
 
-void TText::InsDownSection(std::string s)
+void TText::InsDownSection(std::string s) // переделать
 {
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
@@ -158,7 +179,7 @@ void TText::DelDownLine(void)
         PTTextLink pCurDown = pCurrent->pDown;
         PTTextLink pCurDownNext = pCurDown->pNext;
         
-        if (pCurDownNext->pNext == nullptr) { // ���� ������� ������
+        if (pCurDownNext->pNext == nullptr) { // проверка на атомарность
             pCurrent->pDown = pCurDownNext;       
         }
         
@@ -171,14 +192,58 @@ void TText::DelDownSection(void)
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
+    else if (pCurrent->pDown == nullptr) {
+        SetRetCode(TextError);
+    }
     else {
-
-        delete pCurrent->pDown;
-
+        PTTextLink pCurDown = pCurrent->pDown;
+        PTTextLink pCurDownNext = pCurDown->pNext;
+        
+        pCurrent->pDown = pCurDownNext;       
+         
         SetRetCode(TextOk);
     }
 }
 
+void TText::DelNextLine(void)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else if (pCurrent->pNext == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        PTTextLink pCurNext = pCurrent->pNext;
+        PTTextLink pCurNextNext = pCurNext->pNext;
+        
+        if (pCurNextNext->pNext == nullptr) { // проверка на атомарность
+            pCurrent->pNext = pCurNextNext;       
+        }
+        
+        SetRetCode(TextOk);
+    }
+}
+
+void TText::DelNextSection(void)
+{
+    if (pCurrent == nullptr) {
+        SetRetCode(TextError);
+    }
+    else if (pCurrent->pNext == nullptr) {
+        SetRetCode(TextError);
+    }
+    else {
+        PTTextLink pCurNext = pCurrent->pNext;
+        PTTextLink pCurNextNext = pCurNext->pNext;
+        
+        // if (pCurNextNext->pNext == nullptr) { // проверка на атомарность
+            pCurrent->pNext = pCurNextNext;       
+        // }
+        
+        SetRetCode(TextOk);
+    }
+}
 
 bool TText::Reset (void){
     St = std::stack< PTTextLink >();
