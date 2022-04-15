@@ -52,6 +52,21 @@ int TText::GoFirstLink(void)
     return RetCode;
 }
 
+int TText::GoDownLink (void) 
+{
+    SetRetCode(TextError);
+
+    if (pCurrent != nullptr) {
+        if (pCurrent->pDown != nullptr) {
+            Path.push(pCurrent);
+            pCurrent = pCurrent->pDown;
+            SetRetCode(TextOk);
+        }
+    }
+
+    return RetCode;
+}
+
 int TText::GoNextLink(void)
 {
     SetRetCode(TextError);
@@ -62,6 +77,23 @@ int TText::GoNextLink(void)
             pCurrent = pCurrent->pNext;
             SetRetCode(TextOk);
         }
+    }
+
+    return RetCode;
+}
+
+int TText::GoPrevLink (void) 
+{
+    SetRetCode(TextError);
+
+    if (Path.size() != 0){
+        PTTextLink pLink;
+        pLink = Path.top();
+        Path.pop();
+        pCurrent = pLink;
+
+        SetRetCode(TextOk);
+
     }
 
     return RetCode;
