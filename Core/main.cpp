@@ -18,22 +18,25 @@ int main(){
     PTTextLink Next = new TTextLink(h1);
     PTTextLink Head = new TTextLink(h, Next, Down);
 
-    TText ptr1(nullptr);
+    // TText ptr1(nullptr);
+    TText R;
+    R.Read("../../file.txt");
+    R.Write("../../foo.txt");
+    R.Print();
+    // TText Ttext(ptr1.ReadText(InFile));
 
-    TText Ttext(ptr1.ReadText(InFile));
-
+    // Ttext.PrintText(Ttext.pFirst);
+    
+    // Ttext.Reset(); // установить pCurrent на pFirst 
 
     
-    Ttext.Reset(); // установить pCurrent на pFirst 
+    // Ttext.PrintCurrent();
 
-    
-    Ttext.PrintCurrent();
+    // Ttext.GoNext();
+    // Ttext.PrintCurrent();
 
-    Ttext.GoNext();
-    Ttext.PrintCurrent();
-
-    Ttext.GoNext();
-    Ttext.PrintCurrent();
+    // Ttext.GoNext();
+    // Ttext.PrintCurrent();
 
     
     

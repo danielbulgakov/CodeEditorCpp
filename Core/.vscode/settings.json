@@ -43,7 +43,10 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "deque": "cpp",
+        "stack": "cpp",
+        "string": "cpp"
     },
     "cmake.cpptools.compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\Hostx64\\x64\\cl.exe",
     "C_Cpp.default.configurationProvider": "go2sh.cmake-integration"

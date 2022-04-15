@@ -13,14 +13,15 @@ class TText : public TDataCom {
 
 
 protected:
-    PTTextLink pFirst; // указатель корня дерева
     PTTextLink pCurrent; // указатель текущей строки
+    PTTextLink pFirst; // указатель корня дерева
     std::stack< PTTextLink > Path; // стек траектории движения по тексту
     std::stack< PTTextLink > St; // стек для итератора
     PTTextLink GetFirstAtom (PTTextLink pl); // поиск первого атома
     void PrintText (PTTextLink ptl); // печать текста со звена ptl
-public:
+    void WriteText (std::ofstream& Txtfile, PTTextLink ptl);
     PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
+public:
     TText (PTTextLink pl = nullptr);
     ~TText () {pFirst =nullptr;};
     // PTText getCopy();
@@ -50,6 +51,7 @@ public:
     void Write (char * pFileName); // вывод текста в файл
     //печать
     void Print (void); // печать текста
+
     void PrintCurrent(){
         pCurrent->Print();
     }

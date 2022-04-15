@@ -1,4 +1,11 @@
 int main()
 {
-    std::cout << "Hello World!";
+    if (isGood)
+    {
+        std::cout << "Good!";
+    }
+    else
+    {
+       std::cout << "Bad" ; 
+    }
 }

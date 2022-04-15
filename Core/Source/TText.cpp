@@ -1,8 +1,72 @@
 #include "../Headers/TText.h"
-#include "../Headers/TTextLink.h"
 
-PTTextLink TText::ReadText (std::ifstream &TxtFile) 
-{
+
+PTTextLink TText::GetFirstAtom (PTTextLink pl) {
+    
+    PTTextLink pLink = pCurrent;
+
+    while (pLink != nullptr){
+        pLink = pLink->pDown;
+    }
+
+    return pLink;
+    
+}
+
+void TText::WriteText (std::ofstream& Txtfile, PTTextLink ptl) {
+    
+    PTTextLink pptl = ptl;
+
+    while (pptl != nullptr){
+
+        Txtfile << pptl->GetString() << std::endl;
+
+        if (pptl->pDown != nullptr){
+            Txtfile << '{' << std::endl;
+
+            WriteText(Txtfile, ptl->pDown);
+
+            if (pptl->pNext == nullptr){
+                Txtfile << "}" << std::endl;
+            }
+
+        }
+        
+
+        pptl = pptl->pNext;        
+    }
+
+}
+
+void TText::PrintText (PTTextLink ptl ) {
+
+    PTTextLink pptl = ptl;
+
+    while (pptl != nullptr){
+
+        std::cout << pptl->GetString() << std::endl;
+
+        if (pptl->pDown != nullptr){
+            std::cout << '{' << std::endl;
+
+            PrintText(ptl->pDown);
+
+            if (pptl->pNext == nullptr){
+                std::cout << "}" << std::endl;
+            }
+
+        }
+        
+
+        pptl = pptl->pNext;        
+    }
+
+    
+
+    
+}
+
+PTTextLink TText::ReadText (std::ifstream &TxtFile) {
     PTTextLink pHead, ptl;
     pHead = ptl = new TTextLink();
     char StrBuf[TextLineLength];
@@ -32,16 +96,14 @@ PTTextLink TText::ReadText (std::ifstream &TxtFile)
     return pHead;
 }
 
-TText::TText(PTTextLink pl)
-{
+TText::TText(PTTextLink pl){
     if (pl == nullptr){
         pl = new TTextLink();
     }
     pFirst = pl;
 }
 
-int TText::GoFirstLink(void)
-{
+int TText::GoFirstLink(void){
     while (!Path.empty())
         Path.pop();
     pCurrent = pFirst;
@@ -52,8 +114,7 @@ int TText::GoFirstLink(void)
     return RetCode;
 }
 
-int TText::GoDownLink (void) 
-{
+int TText::GoDownLink (void) {
     SetRetCode(TextError);
 
     if (pCurrent != nullptr) {
@@ -67,8 +128,7 @@ int TText::GoDownLink (void)
     return RetCode;
 }
 
-int TText::GoNextLink(void)
-{
+int TText::GoNextLink(void){
     SetRetCode(TextError);
 
     if (pCurrent != nullptr) {
@@ -82,8 +142,7 @@ int TText::GoNextLink(void)
     return RetCode;
 }
 
-int TText::GoPrevLink (void) 
-{
+int TText::GoPrevLink (void) {
     SetRetCode(TextError);
 
     if (Path.size() != 0){
@@ -99,13 +158,11 @@ int TText::GoPrevLink (void)
     return RetCode;
 }
 
-std::string TText::GetLine(void)
-{
+std::string TText::GetLine(void){
     return pCurrent->GetString();
 }
 
-void TText::SetLine(std::string s)
-{
+void TText::SetLine(std::string s){    
     if (pCurrent == nullptr){
         SetRetCode(TextError);
     }
@@ -123,8 +180,7 @@ void TText::SetLine(std::string s)
     return;
 }
 
-void TText::InsDownLine(std::string s) // переделать
-{
+void TText::InsDownLine(std::string s) { // переделать
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -142,8 +198,7 @@ void TText::InsDownLine(std::string s) // переделать
     }
 }
 
-void TText::InsDownSection(std::string s) // переделать
-{
+void TText::InsDownSection(std::string s) { // переделать
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -161,8 +216,7 @@ void TText::InsDownSection(std::string s) // переделать
     }
 }
 
-void TText::InsNextLine(std::string s)
-{
+void TText::InsNextLine(std::string s){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -180,8 +234,7 @@ void TText::InsNextLine(std::string s)
     }
 }
 
-void TText::InsNextSection(std::string s)
-{
+void TText::InsNextSection(std::string s){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -199,8 +252,7 @@ void TText::InsNextSection(std::string s)
     }
 }
 
-void TText::DelDownLine(void)
-{
+void TText::DelDownLine(void){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -219,8 +271,7 @@ void TText::DelDownLine(void)
     }
 }
 
-void TText::DelDownSection(void)
-{
+void TText::DelDownSection(void){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -237,8 +288,7 @@ void TText::DelDownSection(void)
     }
 }
 
-void TText::DelNextLine(void)
-{
+void TText::DelNextLine(void){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -257,8 +307,7 @@ void TText::DelNextLine(void)
     }
 }
 
-void TText::DelNextSection(void)
-{
+void TText::DelNextSection(void){
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -311,3 +360,24 @@ bool TText::GoNext (void){
     }
     return IsTextEnded();
 };
+
+void TText::Read (char * pFileName) {
+
+    std::ifstream InFile(pFileName);
+    this->Reset();
+
+    pFirst = this->ReadText(InFile);
+}
+
+void TText::Write (char * pFileName) {
+    
+    std::ofstream InFile(pFileName);
+
+    WriteText(InFile , pFirst);
+
+
+}
+
+void TText::Print (void) {
+    this->PrintText(pFirst);
+}
