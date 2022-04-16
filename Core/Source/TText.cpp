@@ -1,6 +1,7 @@
 #include "../Headers/TText.h"
 
 
+
 PTTextLink TText::GetFirstAtom (PTTextLink pl) {
     
     PTTextLink pLink = pCurrent;
@@ -13,57 +14,50 @@ PTTextLink TText::GetFirstAtom (PTTextLink pl) {
     
 }
 
-void TText::WriteText (std::ofstream& Txtfile, PTTextLink ptl) {
+std::stringstream TText::PrintText (PTTextLink ptl) {
+
+    static int level = 0;
+    const int space_size = 4;
     
-    PTTextLink pptl = ptl;
-
-    while (pptl != nullptr){
-
-        Txtfile << pptl->GetString() << std::endl;
-
-        if (pptl->pDown != nullptr){
-            Txtfile << '{' << std::endl;
-
-            WriteText(Txtfile, ptl->pDown);
-
-            if (pptl->pNext == nullptr){
-                Txtfile << "}" << std::endl;
-            }
-
-        }
+    PTTextLink pLink  = ptl;
+    std::stringstream ss;
+    while (pLink != nullptr){
         
+        ss << std::string (space_size * level, ' ');
+        pLink->Print(ss);
+        ss << std::endl;
+        
+        if (pLink->pDown != nullptr){
+            ss << std::string (space_size * level, ' ')<< '{' << std::endl;
+            level++;
+            ss << PrintText(pLink->pDown).rdbuf();
+            level--;
+            ss << std::string (space_size * level, ' ')<< '}' << std::endl;
+        }
 
-        pptl = pptl->pNext;        
+        pLink = pLink->pNext;
     }
-
+    
+  
+    return ss;
+    
 }
 
-void TText::PrintText (PTTextLink ptl ) {
+int TText::CheckForBraces(char* buff) {
+    std::string check (buff);
+    check.erase(std::remove_if(check.begin(), check.end(), ::isspace), check.end());
+    if (check.length() != 1) return 0;
+    if (check[0] == '}') return 1;
+    if (check[0] == '{') return 2;
+    return 0;
+}
 
-    PTTextLink pptl = ptl;
-
-    while (pptl != nullptr){
-
-        std::cout << pptl->GetString() << std::endl;
-
-        if (pptl->pDown != nullptr){
-            std::cout << '{' << std::endl;
-
-            PrintText(ptl->pDown);
-
-            if (pptl->pNext == nullptr){
-                std::cout << "}" << std::endl;
-            }
-
-        }
-        
-
-        pptl = pptl->pNext;        
-    }
-
-    
-
-    
+char* TText::DeleteSpace(char* buff) {
+    std::string check (buff);
+    size_t start = check.find_first_not_of(' ');
+    check = check.substr(start);
+    strncpy(buff, check.c_str(), TextLineLength);
+    return buff;
 }
 
 PTTextLink TText::ReadText (std::ifstream &TxtFile) {
@@ -74,14 +68,14 @@ PTTextLink TText::ReadText (std::ifstream &TxtFile) {
 
     while(TxtFile.eof() == 0){
         TxtFile.getline(StrBuf,StrLen, '\n');
-        if (StrBuf[0] == '}'){
+        if (CheckForBraces(StrBuf) == 1){
             break;
         }
-        else if (StrBuf[0] == '{'){
+        else if (CheckForBraces(StrBuf) == 2){
             ptl->pDown = ReadText(TxtFile);
         }
         else {
-            ptl->pNext = new TTextLink(StrBuf, nullptr, nullptr);
+            ptl->pNext = new TTextLink(DeleteSpace(StrBuf), nullptr, nullptr);
             ptl = ptl->pNext;
         }
     }
@@ -159,7 +153,11 @@ int TText::GoPrevLink (void) {
 }
 
 std::string TText::GetLine(void){
-    return pCurrent->GetString();
+
+    std::ostringstream stream; 
+    pCurrent->Print(stream);
+
+    return stream.str();
 }
 
 void TText::SetLine(std::string s){    
@@ -167,12 +165,12 @@ void TText::SetLine(std::string s){
         SetRetCode(TextError);
     }
     else{
-
+        
         char Buff[TextLineLength];
-        s.copy(Buff, s.length());
+        strncpy(Buff, s.c_str(), TextLineLength);
         Buff[TextLineLength - 1] = '\0';
 
-        PTTextLink pLink = new TTextLink(Buff, pCurrent->pNext, pCurrent->pDown);   
+        pCurrent = new TTextLink(Buff, pCurrent->pNext, pCurrent->pDown);   
 
         SetRetCode(TextOk);
     }
@@ -186,7 +184,7 @@ void TText::InsDownLine(std::string s) { // переделать
     }
     else {
         char Buff[TextLineLength];
-        s.copy(Buff, s.length());
+        strncpy(Buff, s.c_str(), TextLineLength);
         Buff[TextLineLength - 1] = '\0';
 
         PTTextLink PCurDown = pCurrent->pDown;
@@ -204,7 +202,7 @@ void TText::InsDownSection(std::string s) { // переделать
     }
     else {
         char Buff[TextLineLength];
-        s.copy(Buff, s.length());
+        strncpy(Buff, s.c_str(), TextLineLength);
         Buff[TextLineLength - 1] = '\0';
 
         PTTextLink PCurDown = pCurrent->pDown;
@@ -222,7 +220,7 @@ void TText::InsNextLine(std::string s){
     }
     else {
         char Buff[TextLineLength];
-        s.copy(Buff, s.length());
+        strncpy(Buff, s.c_str(), TextLineLength);
         Buff[TextLineLength - 1] = '\0';
 
         PTTextLink PCurNext = pCurrent->pNext;
@@ -240,7 +238,7 @@ void TText::InsNextSection(std::string s){
     }
     else {
         char Buff[TextLineLength];
-        s.copy(Buff, s.length());
+        strncpy(Buff, s.c_str(), TextLineLength);
         Buff[TextLineLength - 1] = '\0';
 
         PTTextLink PCurNext = pCurrent->pNext;
@@ -263,11 +261,11 @@ void TText::DelDownLine(void){
         PTTextLink pCurDown = pCurrent->pDown;
         PTTextLink pCurDownNext = pCurDown->pNext;
         
-        if (pCurDownNext->pNext == nullptr) { // проверка на атомарность
+        if (pCurDown->IsAtom()) { // проверка на атомарность
             pCurrent->pDown = pCurDownNext;       
+            SetRetCode(TextOk);
         }
         
-        SetRetCode(TextOk);
     }
 }
 
@@ -299,11 +297,11 @@ void TText::DelNextLine(void){
         PTTextLink pCurNext = pCurrent->pNext;
         PTTextLink pCurNextNext = pCurNext->pNext;
         
-        if (pCurNextNext->pNext == nullptr) { // проверка на атомарность
+        if (pCurNext->IsAtom()) { // проверка на атомарность
             pCurrent->pNext = pCurNextNext;       
+            SetRetCode(TextOk);
         }
         
-        SetRetCode(TextOk);
     }
 }
 
@@ -330,7 +328,7 @@ bool TText::Reset (void){
     St = std::stack< PTTextLink >();
     pCurrent = pFirst;
     if (pCurrent != nullptr) {
-        //St.push(pCurrent);
+        St.push(pCurrent);
         if (pCurrent->pNext != nullptr) {
             St.push(pCurrent->pNext);
         }
@@ -349,14 +347,14 @@ bool TText::GoNext (void){
     if (!IsTextEnded()) {
         pCurrent = St.top();
         St.pop();
-        //if (pCurrent != pFirst) {
+        if (pCurrent != pFirst) {
             if (pCurrent->pNext != nullptr) {
                 St.push(pCurrent->pNext);
             }
             if (pCurrent->pDown != nullptr) {
                 St.push(pCurrent->pDown);
             }
-        //}
+        }
     }
     return IsTextEnded();
 };
@@ -364,20 +362,20 @@ bool TText::GoNext (void){
 void TText::Read (char * pFileName) {
 
     std::ifstream InFile(pFileName);
+    pFirst = this->ReadText(InFile);
     this->Reset();
 
-    pFirst = this->ReadText(InFile);
 }
 
 void TText::Write (char * pFileName) {
     
     std::ofstream InFile(pFileName);
-
-    WriteText(InFile , pFirst);
-
+    InFile << this->Print().rdbuf();
 
 }
 
-void TText::Print (void) {
-    this->PrintText(pFirst);
+std::stringstream TText::Print (void) {
+
+    return this->PrintText(pFirst);
+
 }

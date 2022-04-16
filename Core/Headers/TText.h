@@ -4,27 +4,33 @@
 #include "TDataCom.h"
 #include "TStack.h"
 #include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <stack>
 #include "TTextLink.h"
 
+class TText;
+typedef TText* PTText;
 
 class TText : public TDataCom {
-
-
 protected:
     PTTextLink pCurrent; // указатель текущей строки
     PTTextLink pFirst; // указатель корня дерева
     std::stack< PTTextLink > Path; // стек траектории движения по тексту
     std::stack< PTTextLink > St; // стек для итератора
     PTTextLink GetFirstAtom (PTTextLink pl); // поиск первого атома
-    void PrintText (PTTextLink ptl); // печать текста со звена ptl
-    void WriteText (std::ofstream& Txtfile, PTTextLink ptl);
+    std::stringstream PrintText (PTTextLink ptl); // печать текста со звена ptl
     PTTextLink ReadText (std::ifstream &TxtFile); //чтение текста из файла
+
+    // методы форматирования кода
+    int CheckForBraces(char* buff);
+    char* DeleteSpace(char* buff);
+
 public:
     TText (PTTextLink pl = nullptr);
     ~TText () {pFirst =nullptr;};
-    // PTText getCopy();
+    PTText GetCopy() { return new TText(pFirst);};
     // навигация
     int GoFirstLink (void); // переход к первой строке
     int GoDownLink (void); // переход к следующей строке по Down
@@ -50,11 +56,8 @@ public:
     void Read (char * pFileName); // ввод текста из файла
     void Write (char * pFileName); // вывод текста в файл
     //печать
-    void Print (void); // печать текста
+    std::stringstream Print (void); // печать текста
 
-    void PrintCurrent(){
-        pCurrent->Print();
-    }
 };
 
-typedef TText* PTText;
+

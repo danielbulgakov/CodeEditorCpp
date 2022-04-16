@@ -1,0 +1,12 @@
+Переписать / Проверить методы  
+                    void InsDownLine (std::string s); // вставка строки в подуровень
+                    void InsDownSection (std::string s); // вставка раздела в подуровень
+                    void InsNextLine (std::string s); // вставка строки в том же уровне
+                    void InsNextSection (std::string s); // вставка раздела в том же уровне
+                    void DelDownLine (void); // удаление строки в подуровне
+                    void DelDownSection (void); // удаление раздела в подуровне
+                    void DelNextLine (void); // удаление строки в том же уровне
+                    void DelNextSection (void); // удаление раздела в том же уровне
+
+Проверить работу с памятью
+Проверить использование в методах других методов, которые изменяют стек перемещения (GoNext, GoNextLink и т.п.) 
