@@ -1,4 +1,4 @@
-Переписать / Проверить методы  
+Переписать / Проверить методы  (Done) 
                     void InsDownLine (std::string s); // вставка строки в подуровень
                     void InsDownSection (std::string s); // вставка раздела в подуровень
                     void InsNextLine (std::string s); // вставка строки в том же уровне

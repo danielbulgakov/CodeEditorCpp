@@ -17,7 +17,8 @@ int main(){
     // R.Write("../../foo.txt");
 
     R.Reset();
-    PTText g = R.GetCopy();
+    R.InsDownSection("adasd");
+    std::cout << R.Print().str();
 
 
     

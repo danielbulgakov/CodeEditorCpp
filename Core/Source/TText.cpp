@@ -137,7 +137,7 @@ int TText::GoNextLink(void){
 }
 
 int TText::GoPrevLink (void) {
-    SetRetCode(TextError);
+    SetRetCode(TextNoPrev);
 
     if (Path.size() != 0){
         PTTextLink pLink;
@@ -167,11 +167,10 @@ void TText::SetLine(std::string s){
     else{
         
         char Buff[TextLineLength];
-        strncpy(Buff, s.c_str(), TextLineLength);
-        Buff[TextLineLength - 1] = '\0';
+        strncpy(pCurrent->Str, s.c_str(), TextLineLength);
+        pCurrent->Str[TextLineLength - 1] = '\0';
 
-        pCurrent = new TTextLink(Buff, pCurrent->pNext, pCurrent->pDown);   
-
+        
         SetRetCode(TextOk);
     }
 
@@ -183,14 +182,12 @@ void TText::InsDownLine(std::string s) { // переделать
         SetRetCode(TextError);
     }
     else {
-        char Buff[TextLineLength];
-        strncpy(Buff, s.c_str(), TextLineLength);
-        Buff[TextLineLength - 1] = '\0';
-
-        PTTextLink PCurDown = pCurrent->pDown;
-        PTTextLink pNewDown = new TTextLink(Buff, PCurDown);
-        
-        pCurrent->pDown = pNewDown;
+        PTTextLink pd = pCurrent->pDown;
+        PTTextLink pl = new TTextLink("", pd, nullptr);
+        strncpy(pl->Str, s.c_str(), TextLineLength);
+        pl->Str[TextLineLength - 1] = '\0';
+        pCurrent->pDown = pl;
+    
 
         SetRetCode(TextOk);
     }
@@ -201,14 +198,12 @@ void TText::InsDownSection(std::string s) { // переделать
         SetRetCode(TextError);
     }
     else {
-        char Buff[TextLineLength];
-        strncpy(Buff, s.c_str(), TextLineLength);
-        Buff[TextLineLength - 1] = '\0';
-
-        PTTextLink PCurDown = pCurrent->pDown;
-        PTTextLink pNewDown = new TTextLink(Buff, nullptr, PCurDown);
-
-        pCurrent->pDown = pNewDown;
+        PTTextLink pd = pCurrent->pDown;
+        PTTextLink pl = new TTextLink("", nullptr, pd);
+        strncpy(pl->Str, s.c_str(), TextLineLength);
+        pl->Str[TextLineLength - 1] = '\0';
+        pCurrent->pDown = pl;
+    
 
         SetRetCode(TextOk);
     }
@@ -219,14 +214,12 @@ void TText::InsNextLine(std::string s){
         SetRetCode(TextError);
     }
     else {
-        char Buff[TextLineLength];
-        strncpy(Buff, s.c_str(), TextLineLength);
-        Buff[TextLineLength - 1] = '\0';
-
-        PTTextLink PCurNext = pCurrent->pNext;
-        PTTextLink pNewNext = new TTextLink(Buff, PCurNext);
-
-        pCurrent->pNext = pNewNext;
+        PTTextLink pd = pCurrent->pNext;
+        PTTextLink pl = new TTextLink("", pd, nullptr);
+        strncpy(pl->Str, s.c_str(), TextLineLength);
+        pl->Str[TextLineLength - 1] = '\0';
+        pCurrent->pNext = pl;
+    
 
         SetRetCode(TextOk);
     }
@@ -237,20 +230,19 @@ void TText::InsNextSection(std::string s){
         SetRetCode(TextError);
     }
     else {
-        char Buff[TextLineLength];
-        strncpy(Buff, s.c_str(), TextLineLength);
-        Buff[TextLineLength - 1] = '\0';
-
-        PTTextLink PCurNext = pCurrent->pNext;
-        PTTextLink pNewNext = new TTextLink(Buff, nullptr, PCurNext);
-
-        pCurrent->pNext = pNewNext;
+        PTTextLink pd = pCurrent->pNext;
+        PTTextLink pl = new TTextLink("", nullptr, pd);
+        strncpy(pl->Str, s.c_str(), TextLineLength);
+        pl->Str[TextLineLength - 1] = '\0';
+        pCurrent->pNext = pl;
+    
 
         SetRetCode(TextOk);
     }
 }
 
 void TText::DelDownLine(void){
+    SetRetCode(TextOk);
     if (pCurrent == nullptr) {
         SetRetCode(TextError);
     }
@@ -263,7 +255,6 @@ void TText::DelDownLine(void){
         
         if (pCurDown->IsAtom()) { // проверка на атомарность
             pCurrent->pDown = pCurDownNext;       
-            SetRetCode(TextOk);
         }
         
     }
