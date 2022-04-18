@@ -30,7 +30,7 @@ protected:
 public:
     TText (PTTextLink pl = nullptr);
     ~TText () {pFirst =nullptr;};
-    PTText GetCopy() { return new TText(pFirst);};
+    PTText GetCopy();
     // навигация
     int GoFirstLink (void); // переход к первой строке
     int GoDownLink (void); // переход к следующей строке по Down

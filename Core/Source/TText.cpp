@@ -4,13 +4,13 @@
 
 PTTextLink TText::GetFirstAtom (PTTextLink pl) {
     
-    PTTextLink pLink = pCurrent;
+    PTTextLink tmp = pl;
 
-    while (pLink != nullptr){
-        pLink = pLink->pDown;
+    while(!tmp->IsAtom()){
+        St.push(tmp);
+        tmp = tmp->GetDown();
     }
-
-    return pLink;
+    return tmp;
     
 }
 
@@ -58,6 +58,41 @@ char* TText::DeleteSpace(char* buff) {
     check = check.substr(start);
     strncpy(buff, check.c_str(), TextLineLength);
     return buff;
+}
+
+PTText TText::GetCopy() {
+    PTTextLink pl1, pl2, pl = pFirst, cpl = nullptr;
+    if (pFirst != nullptr){
+        while(!St.empty())
+            St.pop();
+        while(true){
+            if (pl != nullptr){
+                pl = GetFirstAtom(pl);
+                St.push(pl);
+                pl = pl->GetDown();
+            }
+            else if (St.empty())
+                break;
+            else{
+                pl1 = St.top();
+                St.pop();
+                if (strstr(pl1->Str, "Copy") == NULL){
+                    pl2 = new TTextLink("Copy", pl1, cpl);
+                    St.push(pl2);
+                    pl = pl1->GetNext();
+                    cpl = nullptr;
+                }
+                else {
+                    pl2 = pl1->GetNext();
+                    strcpy(pl1->Str, pl2->Str);
+                    pl1->pNext = cpl;
+                    cpl = pl1;
+                }
+            }
+            
+        }
+    }
+    return new TText(cpl);
 }
 
 PTTextLink TText::ReadText (std::ifstream &TxtFile) {
@@ -166,7 +201,6 @@ void TText::SetLine(std::string s){
     }
     else{
         
-        char Buff[TextLineLength];
         strncpy(pCurrent->Str, s.c_str(), TextLineLength);
         pCurrent->Str[TextLineLength - 1] = '\0';
 
@@ -340,9 +374,11 @@ bool TText::GoNext (void){
         St.pop();
         if (pCurrent != pFirst) {
             if (pCurrent->pNext != nullptr) {
+                std::cout << "Next";
                 St.push(pCurrent->pNext);
             }
             if (pCurrent->pDown != nullptr) {
+                std::cout << "Down";
                 St.push(pCurrent->pDown);
             }
         }

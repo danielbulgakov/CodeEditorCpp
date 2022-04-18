@@ -17,9 +17,11 @@ int main(){
     // R.Write("../../foo.txt");
 
     R.Reset();
-    R.InsDownSection("adasd");
-    std::cout << R.Print().str();
-
+    
+    
+    
+    std::cout << (R.GetCopy())->Print().str();
+    // std::cout << R.Print().str();
 
     
 
