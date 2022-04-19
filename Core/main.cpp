@@ -14,13 +14,16 @@ int main(){
     TText R;
     R.Read("../../file.txt");
     // // std::cout << R.Print().str();
-    // R.Write("../../foo.txt");
 
     R.Reset();
-    
-    
-    
-    std::cout << (R.GetCopy())->Print().str();
+    R.InsDownSection("new Section");
+
+
+    R.Write("../../foo.txt"); 
+    // std::cout << R.Print().str();
+    std::cout << R.GetCopy()->Print().str() << std::endl;
+    TTextLink::MemCleaner(R); std::cout << std::endl;
+    std::cout << R.GetCopy()->Print().str() << std::endl;
     // std::cout << R.Print().str();
 
     

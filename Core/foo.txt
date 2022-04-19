@@ -1,18 +1,21 @@
 int main()
 {
-    if (isGood)
+    new Section
     {
-        if (a>5)
+        if (isGood)
         {
-            std::cout << "Good!";
+            if (a>5)
+            {
+                std::cout << "Good!";
+            }
+            else
+            {
+                std::cout << "GG";
+            }
         }
         else
         {
-            std::cout << "GG";
+            std::cout << "Bad" ; 
         }
-    }
-    else
-    {
-        std::cout << "Bad" ; 
     }
 }

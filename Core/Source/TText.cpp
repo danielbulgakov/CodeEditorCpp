@@ -38,6 +38,7 @@ std::stringstream TText::PrintText (PTTextLink ptl) {
         pLink = pLink->pNext;
     }
     
+    
   
     return ss;
     
@@ -75,6 +76,7 @@ PTText TText::GetCopy() {
                 break;
             else{
                 pl1 = St.top();
+                
                 St.pop();
                 if (strstr(pl1->Str, "Copy") == NULL){
                     pl2 = new TTextLink("Copy", pl1, cpl);
@@ -84,11 +86,14 @@ PTText TText::GetCopy() {
                 }
                 else {
                     pl2 = pl1->GetNext();
+                    
                     strcpy(pl1->Str, pl2->Str);
                     pl1->pNext = cpl;
                     cpl = pl1;
                 }
             }
+
+           
             
         }
     }
@@ -374,11 +379,11 @@ bool TText::GoNext (void){
         St.pop();
         if (pCurrent != pFirst) {
             if (pCurrent->pNext != nullptr) {
-                std::cout << "Next";
+
                 St.push(pCurrent->pNext);
             }
             if (pCurrent->pDown != nullptr) {
-                std::cout << "Down";
+
                 St.push(pCurrent->pDown);
             }
         }
