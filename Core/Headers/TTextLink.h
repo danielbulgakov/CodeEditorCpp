@@ -18,7 +18,7 @@ enum TextErrors{
 };
 
 enum StaticParameters{
-    MemSize = 20,
+    MemSize = 50,
     TextLineLength = 100
 };
 
