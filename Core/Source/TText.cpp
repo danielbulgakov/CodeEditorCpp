@@ -374,11 +374,11 @@ bool TText::GoNext (void){
         St.pop();
         if (pCurrent != pFirst) {
             if (pCurrent->pNext != nullptr) {
-                std::cout << "Next";
+                
                 St.push(pCurrent->pNext);
             }
             if (pCurrent->pDown != nullptr) {
-                std::cout << "Down";
+                
                 St.push(pCurrent->pDown);
             }
         }

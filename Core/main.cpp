@@ -18,10 +18,10 @@ int main(){
 
     R.Reset();
     
-    
-    
-    std::cout << (R.GetCopy())->Print().str();
-    // std::cout << R.Print().str();
+    std::cout << R.GetLine() << std::endl;
+    while(!R.GoNext()){
+        std::cout << R.GetLine() << std::endl;
+    }
 
     
 
