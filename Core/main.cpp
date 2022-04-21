@@ -16,13 +16,13 @@ int main(){
     // // std::cout << R.Print().str();
 
     R.Reset();
-<<<<<<< HEAD
+
     
     std::cout << R.GetLine() << std::endl;
     while(!R.GoNext()){
         std::cout << R.GetLine() << std::endl;
     }
-=======
+
     R.InsDownSection("new Section");
 
 
@@ -32,7 +32,7 @@ int main(){
     TTextLink::MemCleaner(R); std::cout << std::endl;
     std::cout << R.GetCopy()->Print().str() << std::endl;
     // std::cout << R.Print().str();
->>>>>>> 520c041702fab6eef735f4d413b0c2a1ad247086
+
 
     
 
