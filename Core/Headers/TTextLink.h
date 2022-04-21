@@ -47,7 +47,7 @@ public:
     void * operator new (size_t size); // выделение звена
     void operator delete (void *pM); // освобождение звена
     static void MemCleaner (TText &txt); // сборка мусора
-    TTextLink (TStr s = NULL, PTTextLink pn = nullptr, PTTextLink pd = nullptr){
+    TTextLink (const TStr s = NULL, PTTextLink pn = nullptr, PTTextLink pd = nullptr){
     pNext = pn; pDown = pd;
     if (s != NULL) strcpy(Str,s); else Str[0]='\0';
     }
