@@ -6,13 +6,14 @@
 
 
 int main(){
+    // system("node ../../../test.js");
     TTextLink::InitMemSystem(); // инициализация памяти!!!
 
-    std::ifstream InFile("../../file.txt");
-
+    std::ifstream InFile("../file.txt");
+    // system("node ../../test.js");
     
     TText R;
-    R.Read("../../file.txt");
+    R.Read("../file.txt");
     // // std::cout << R.Print().str();
 
     R.Reset();
@@ -23,16 +24,16 @@ int main(){
         std::cout << R.GetLine() << std::endl;
     }
 
-    R.InsDownSection("new Section");
 
 
-    R.Write("../../foo.txt"); 
+
+    R.Write("../foo.txt"); 
     // std::cout << R.Print().str();
     std::cout << R.GetCopy()->Print().str() << std::endl;
     TTextLink::MemCleaner(R); std::cout << std::endl;
     std::cout << R.GetCopy()->Print().str() << std::endl;
     // std::cout << R.Print().str();
-
+    system("node ../foo.txt");
 
     
 

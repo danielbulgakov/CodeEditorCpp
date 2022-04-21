@@ -8,7 +8,9 @@
 #include <sstream>
 #include <string>
 #include <stack>
+#include <algorithm>
 #include "TTextLink.h"
+
 
 class TText;
 typedef TText* PTText;
@@ -53,8 +55,8 @@ public:
     bool IsTextEnded (void) const; // текст завершен?
     bool GoNext (void); // переход к следующей записи
     //работа с файлами
-    void Read (char * pFileName); // ввод текста из файла
-    void Write (char * pFileName); // вывод текста в файл
+    void Read (const char * pFileName); // ввод текста из файла
+    void Write (const char * pFileName); // вывод текста в файл
     //печать
     std::stringstream Print (void); // печать текста
 

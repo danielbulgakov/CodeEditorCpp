@@ -55,6 +55,7 @@ int TText::CheckForBraces(char* buff) {
 
 char* TText::DeleteSpace(char* buff) {
     std::string check (buff);
+    if (check.size() == 0 ) return buff;
     size_t start = check.find_first_not_of(' ');
     check = check.substr(start);
     strncpy(buff, check.c_str(), TextLineLength);
@@ -108,6 +109,7 @@ PTTextLink TText::ReadText (std::ifstream &TxtFile) {
 
     while(TxtFile.eof() == 0){
         TxtFile.getline(StrBuf,StrLen, '\n');
+        
         if (CheckForBraces(StrBuf) == 1){
             break;
         }
@@ -115,6 +117,7 @@ PTTextLink TText::ReadText (std::ifstream &TxtFile) {
             ptl->pDown = ReadText(TxtFile);
         }
         else {
+            
             ptl->pNext = new TTextLink(DeleteSpace(StrBuf), nullptr, nullptr);
             ptl = ptl->pNext;
         }
@@ -389,7 +392,7 @@ bool TText::GoNext (void){
     return IsTextEnded();
 };
 
-void TText::Read (char * pFileName) {
+void TText::Read (const char * pFileName) {
 
     std::ifstream InFile(pFileName);
     pFirst = this->ReadText(InFile);
@@ -397,7 +400,7 @@ void TText::Read (char * pFileName) {
 
 }
 
-void TText::Write (char * pFileName) {
+void TText::Write (const char * pFileName) {
     
     std::ofstream InFile(pFileName);
     InFile << this->Print().rdbuf();

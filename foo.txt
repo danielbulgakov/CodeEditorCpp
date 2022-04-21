@@ -1,0 +1,5 @@
+function myFunc(theObject) {
+{
+    new Section
+}
+theObject.make = 'Toyota';

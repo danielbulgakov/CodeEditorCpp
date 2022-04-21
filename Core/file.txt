@@ -1,18 +1,12 @@
-int main()
+function myFunc(theObject) 
 {
-    if (isGood)
-    {
-        if (a>5)
-        {
-            std::cout << "Good!";
-        }
-        else
-        {
-            std::cout << "GG";
-        }
-    }
-    else
-    {
-        std::cout << "Bad" ; 
-    }
+  theObject.make = 'Toyota';
 }
+
+var mycar = {make: 'Honda', model: 'Accord', year: 1998};
+var x, y;
+
+x = mycar.make; // x получает значение "Honda"
+myFunc(mycar);
+y = mycar.make;
+console.log(y);
