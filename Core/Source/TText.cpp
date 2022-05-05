@@ -397,14 +397,14 @@ void TText::Read (const char * pFileName) {
     std::ifstream InFile(pFileName);
     pFirst = this->ReadText(InFile);
     this->Reset();
-
+    InFile.close();
 }
 
 void TText::Write (const char * pFileName) {
     
     std::ofstream InFile(pFileName);
     InFile << this->Print().rdbuf();
-
+    InFile.close();
 }
 
 std::stringstream TText::Print (void) {
